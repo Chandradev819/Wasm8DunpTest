@@ -17,9 +17,6 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-        with:
-          submodules: true
-          lfs: false
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
@@ -29,8 +26,8 @@ jobs:
       - name: Restore Dependencies
         run: dotnet restore ./Wasm8DunpTest.csproj
 
-      - name: Publish Blazor WASM App
-        run: dotnet publish ./Wasm8DunpTest.csproj --configuration Release --output ./publish
+      - name: Publish Blazor WASM
+        run: dotnet publish ./Wasm8DunpTest.csproj -c Release -o published
 
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
@@ -39,7 +36,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
           app_location: "/"
-          output_location: "publish/wwwroot"
+          output_location: "published/wwwroot"
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
