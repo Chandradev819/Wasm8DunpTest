@@ -6,21 +6,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
   </PropertyGroup>
-
-   <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <PublishTrimmed>true</PublishTrimmed>
-    <TrimMode>link</TrimMode>
-    <EnableAnalyzer>true</EnableAnalyzer>
-    <BlazorEnableLinkerAnalyzer>true</BlazorEnableLinkerAnalyzer>
-    <InvariantGlobalization>true</InvariantGlobalization>
-    <BlazorWebAssemblyPreserveCollationData>false</BlazorWebAssemblyPreserveCollationData>
-    <BlazorWebAssemblyPreserveCultureData>false</BlazorWebAssemblyPreserveCultureData>
-    <StripDebugSymbols>true</StripDebugSymbols>
-    <DebugType>none</DebugType>
-    <CompressionEnabled>true</CompressionEnabled>
-    <BlazorWebAssemblyEnableAOT>true</BlazorWebAssemblyEnableAOT>
-    <BlazorWebAssemblyLazyLoadAssemblies>true</BlazorWebAssemblyLazyLoadAssemblies>
-  </PropertyGroup>
   
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.18" />
