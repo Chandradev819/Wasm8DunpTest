@@ -21,27 +21,31 @@ jobs:
           submodules: true
           lfs: false
 
+      # ── Install the WASM workload ─────────────────────────────────────
       - name: Install WASM Tools workload
         run: dotnet workload install wasm-tools
 
+      # ── Publish with AOT turned off + Brotli enabled ────────────────
       - name: Publish Blazor WebAssembly (AOT + Brotli)
-        run: dotnet publish -c Release \
+        working-directory: Client           # <— point at your Blazor project folder
+        run: |
+          dotnet publish \
+            --configuration Release \
             /p:BlazorWebAssemblyEnableAOT=false \
             /p:CompressionEnabled=true \
-            -o wwwroot
+            --output ../wwwroot
 
+      # ── Push to Azure Static Web Apps ──────────────────────────────
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PURPLE_CLIFF_0384D3510 }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-          app_location: "/"       # App source code path
-          api_location: "Api"     # Api source code path - optional
-          output_location: "wwwroot" # Built app content directory - optional
-          ###### End of Repository/Build Configurations ######
+          app_location: "/" 
+          api_location: "Api"
+          output_location: "wwwroot"
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
