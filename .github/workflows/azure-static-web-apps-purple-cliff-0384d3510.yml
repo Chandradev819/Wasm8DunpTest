@@ -23,10 +23,10 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore
-        run: dotnet restore ./Wasm8DunpTest/Wasm8DunpTest.csproj
+        run: dotnet restore ./Client/Wasm8DunpTest.csproj
 
       - name: Publish
-        run: dotnet publish ./Wasm8DunpTest/Wasm8DunpTest.csproj -c Release -o release
+        run: dotnet publish ./Client/Wasm8DunpTest.csproj -c Release -o release
 
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
@@ -35,9 +35,8 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
           app_location: "/release/wwwroot"
-          api_location: "Api"
           output_location: ""
-          
+
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
