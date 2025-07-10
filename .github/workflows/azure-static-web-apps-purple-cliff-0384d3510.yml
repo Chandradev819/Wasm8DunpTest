@@ -15,18 +15,22 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+          lfs: false
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
 
-      - name: Restore
-        run: dotnet restore ./Client/Wasm8DunpTest.csproj
+      - name: Restore Dependencies
+        run: dotnet restore ./Wasm8DunpTest.csproj
 
-      - name: Publish
-        run: dotnet publish ./Client/Wasm8DunpTest.csproj -c Release -o release
+      - name: Publish Blazor WASM App
+        run: dotnet publish ./Wasm8DunpTest.csproj --configuration Release --output ./publish
 
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
@@ -34,8 +38,8 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PURPLE_CLIFF_0384D3510 }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "/release/wwwroot"
-          output_location: ""
+          app_location: "/"
+          output_location: "publish/wwwroot"
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
